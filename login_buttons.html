@@ -1,10 +1,4 @@
-<!--
-    NOTE: You shouldn't use these templates directly. Instead, use the global
-    {{loginButtons}} template. For positioning on the right side of your app,
-    try {{loginButtons align="right"}}
-  -->
-
-<template name="_loginButtons">
+<template name="loginButtons">
   <div id="login-buttons" class="login-buttons-dropdown-align-{{align}}">
     {{#if currentUser}}
       {{#if loggingIn}}
@@ -25,6 +19,25 @@
     {{else}}
       {{> _loginButtonsLoggedOut}}
     {{/if}}
+  </div>
+</template>
+
+<template name="loginSection">{{! Added by AGS }}
+  <div class="standalone-accounts-dialog" id="login-buttons">
+    {{#each services}}
+      {{#if isPasswordService}}
+        {{#if hasOtherServices}} {{! the password service will always come last }}
+          {{> _loginButtonsLoggedOutPasswordServiceSeparator}}
+        {{/if}}
+        {{> _loginButtonsLoggedOutPasswordService}}
+      {{else}}
+        {{> _loginButtonsLoggedOutSingleLoginButton}}
+      {{/if}}
+    {{/each}}
+
+    {{#unless hasPasswordService}}
+      {{> _loginButtonsMessages}}
+    {{/unless}}
   </div>
 </template>
 
@@ -86,6 +99,6 @@
     </div>
   {{else}}
     {{! just add some padding }}
-    <div class="login-buttons-padding" />
+    <div class="login-buttons-padding"></div>
   {{/unless}}
 </template>
