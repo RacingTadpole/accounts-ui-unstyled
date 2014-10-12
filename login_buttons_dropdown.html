@@ -34,7 +34,7 @@
   {{/if}}
 
   <div class="login-button" id="login-buttons-logout">
-    Sign out
+    Log out
   </div>
 
   {{> _loginButtonsMessages}}
@@ -48,7 +48,7 @@
     {{#if dropdownVisible}}
       {{! This text is covered by the dropdown, but duplicating it here
           makes the position of "Close" match the position of this text. }}
-      <a class="login-link-text" id="login-sign-in-link">Sign in ▾</a>
+      <a class="login-link-text" id="login-sign-in-link">Log in ▾</a>
       <div id="login-dropdown-list" class="accounts-dialog">
         <a class="login-close-text close">&times;</a>
         {{#if loggingIn}}
@@ -62,7 +62,7 @@
         {{! Not normally visible, but if the user closes the dropdown during login.}}
         {{> _loginButtonsLoggingIn}}
       {{else}}
-        <a class="login-link-text" id="login-sign-in-link">Sign in ▾</a>
+        <a class="login-link-text" id="login-sign-in-link">Log in ▾</a>
       {{/if}}
     {{/if}}
   </div>
@@ -105,7 +105,7 @@
       {{> _loginButtonsMessages}}
 
       <div class="login-button login-button-form-submit-left" id="login-buttons-password">
-          Sign in
+          Log in
       </div>
       <div class="login-button login-button-form-submit-right" id="signup-buttons-password">
           New user
@@ -140,7 +140,7 @@
 
 <template name="_loginButtonsBackToLoginLink">
   <div class="additional-link-container">
-    <a id="back-to-login-link" class="additional-link">Sign in</a>
+    <a id="back-to-login-link" class="additional-link">Log in</a>
   </div>
 </template>
 

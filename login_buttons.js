@@ -149,7 +149,7 @@ Template._loginButtonsLoggedInSingleLogoutButton.displayName = displayName;
 
 Template._loginButtonsMessages.errorMessage = function () {
   if (loginButtonsSession.get('errorMessage')=='User not found') {
-    return 'User not found. If this is your first time here, please press "New user", or sign in with Google above.'
+    return 'User not found. If this is your first time here, please press "New user", or log in with Google above.'
   }
   return loginButtonsSession.get('errorMessage');
 };
