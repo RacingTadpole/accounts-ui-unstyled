@@ -7,7 +7,7 @@ Package.describe({
 
 Package.on_use(function (api) {
   
-  api.versionsFrom('undefined');
+  api.versionsFrom('METEOR-CORE@0.9.0');
 
   api.use(['deps', 'service-configuration', 'accounts-base',
            'underscore', 'templating', 'session'], 'client');
