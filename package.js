@@ -1,18 +1,22 @@
 Package.describe({
-  summary: "Unstyled version of login widgets"
+  name: 'art:accounts-ui-unstyled',
+  summary: 'Unstyled version of login widgets, with simplified flow',
+  version: '1.0.0',
+  git: 'https://github.com/RacingTadpole/accounts-ui-unstyled.git'
 });
 
 Package.on_use(function (api) {
+  
+  api.versionsFrom('undefined');
+
   api.use(['deps', 'service-configuration', 'accounts-base',
            'underscore', 'templating', 'session'], 'client');
   // Export Accounts (etc) to packages using this one.
   api.imply('accounts-base', ['client', 'server']);
 
-  // Allow us to call Accounts.oauth.serviceNames, if there are any OAuth
-  // services.
+  // Allow us to call Accounts.oauth.serviceNames, if there are any OAuth services.
   api.use('accounts-oauth', {weak: true});
-  // Allow us to directly test if accounts-password (which doesn't use
-  // Accounts.oauth.registerService) exists.
+  // Allow us to directly test if accounts-password (which doesn't use Accounts.oauth.registerService) exists.
   api.use('accounts-password', {weak: true});
 
   api.add_files([
@@ -32,7 +36,7 @@ Package.on_use(function (api) {
 });
 
 Package.on_test(function (api) {
-  api.use('accounts-ui-unstyled');
+  api.use('art:accounts-ui-unstyled');
   api.use('tinytest');
   api.add_files('accounts_ui_tests.js', 'client');
 });
