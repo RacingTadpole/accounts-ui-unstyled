@@ -1,11 +1,11 @@
 Package.describe({
   name: 'art:accounts-ui-unstyled',
   summary: 'Unstyled version of login widgets, with simplified flow',
-  version: '1.0.0',
+  version: '1.0.1',
   git: 'https://github.com/RacingTadpole/accounts-ui-unstyled.git'
 });
 
-Package.on_use(function (api) {
+Package.onUse(function (api) {
   
   api.versionsFrom('METEOR@0.9.0');
 
@@ -35,7 +35,7 @@ Package.on_use(function (api) {
     'login_buttons_dialogs.js'], 'client');
 });
 
-Package.on_test(function (api) {
+Package.onTest(function (api) {
   api.use('art:accounts-ui-unstyled');
   api.use('tinytest');
   api.add_files('accounts_ui_tests.js', 'client');
