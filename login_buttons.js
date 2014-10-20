@@ -87,13 +87,15 @@ validateUsername = function (username) {
 validateEmail = function (email) {
   if (passwordSignupFields() === "USERNAME_AND_OPTIONAL_EMAIL" && email === '')
     return true;
-
-  if (email.indexOf('@') !== -1) {
-    return true;
-  } else {
-    loginButtonsSession.errorMessage("Invalid email");
-    return false;
+  // checking if an email address is allowed is actually pretty tricky
+  // so just make sure it meets a few basic rules - contains an @, doesn't contain space, <, > or comma
+  if (email.indexOf('@') > 0) {
+    if ((email.length>=6) && (email.indexOf('<')==-1) && (email.indexOf('>')==-1) && (email.indexOf(',')==-1) && (email.indexOf(' ')==-1)) {
+      return true;
+    }
   }
+  loginButtonsSession.errorMessage("Invalid email");
+  return false;
 };
 validatePassword = function (password) {
   if (password.length >= 6) {
