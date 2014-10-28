@@ -1,7 +1,7 @@
 Package.describe({
   name: 'art:accounts-ui-unstyled',
   summary: 'Unstyled version of login widgets, with simplified flow',
-  version: '1.0.2',
+  version: '1.1.0',
   git: 'https://github.com/RacingTadpole/accounts-ui-unstyled.git'
 });
 

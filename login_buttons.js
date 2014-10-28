@@ -10,7 +10,7 @@ Template.loginButtons.events({
   }
 });
 
-UI.registerHelper('loginButtons', function () {
+Template.registerHelper('loginButtons', function () {
   throw new Error("Use {{> loginButtons}} instead of {{loginButtons}}");
 });
 
@@ -110,22 +110,20 @@ validatePassword = function (password) {
 // loginButtonLoggedOut template
 //
 
-Template._loginButtonsLoggedOut.dropdown = dropdown;
-
-Template._loginButtonsLoggedOut.services = getLoginServices;
-
-Template._loginButtonsLoggedOut.singleService = function () {
-  var services = getLoginServices();
-  if (services.length !== 1)
-    throw new Error(
-      "Shouldn't be rendering this template with more than one configured service");
-  return services[0];
-};
-
-Template._loginButtonsLoggedOut.configurationLoaded = function () {
-  return Accounts.loginServicesConfigured();
-};
-
+Template._loginButtonsLoggedOut.helpers({
+  "dropdown": dropdown,
+  "services": getLoginServices,
+  "singleService": function () {
+    var services = getLoginServices();
+    if (services.length !== 1)
+      throw new Error(
+        "Shouldn't be rendering this template with more than one configured service");
+    return services[0];
+  },
+  configurationLoaded: function () {
+    return Accounts.loginServicesConfigured();
+  },
+});
 
 //
 // loginButtonsLoggedIn template
@@ -133,7 +131,9 @@ Template._loginButtonsLoggedOut.configurationLoaded = function () {
 
 // decide whether we should show a dropdown rather than a row of
 // buttons
-Template._loginButtonsLoggedIn.dropdown = dropdown;
+Template._loginButtonsLoggedIn.helpers({
+  "dropdown": dropdown,
+});
 
 
 
@@ -141,7 +141,9 @@ Template._loginButtonsLoggedIn.dropdown = dropdown;
 // loginButtonsLoggedInSingleLogoutButton template
 //
 
-Template._loginButtonsLoggedInSingleLogoutButton.displayName = displayName;
+Template._loginButtonsLoggedInSingleLogoutButton.helpers({
+  "displayName": displayName,
+});
 
 
 
@@ -149,41 +151,46 @@ Template._loginButtonsLoggedInSingleLogoutButton.displayName = displayName;
 // loginButtonsMessage template
 //
 
-Template._loginButtonsMessages.errorMessage = function () {
-  if (loginButtonsSession.get('errorMessage')=='User not found') {
-    return 'User not found. If this is your first time here, please press "New user", or log in with Google above.'
-  }
-  return loginButtonsSession.get('errorMessage');
-};
-
-Template._loginButtonsMessages.infoMessage = function () {
-  return loginButtonsSession.get('infoMessage');
-};
+Template._loginButtonsMessages.helpers({
+  "errorMessage": function () {
+    if (loginButtonsSession.get('errorMessage')=='User not found') {
+      return 'User not found. If this is your first time here, please press "New user", or log in with Google above.'
+    }
+    return loginButtonsSession.get('errorMessage');
+  },
+  "infoMessage": function () {
+    return loginButtonsSession.get('infoMessage');
+  },
+});
 
 
 //
 // loginButtonsLoggingInPadding template
 //
 
-Template._loginButtonsLoggingInPadding.dropdown = dropdown;
+Template._loginButtonsLoggingInPadding.helpers({
+  "dropdown": dropdown,
+});
 
 //
 // added by AGS
 //
-Template.loginSection.configurationLoaded = function () {
-  return Accounts.loginServicesConfigured();
-};
+Template.loginSection.helpers({
+  "configurationLoaded": function () {
+    return Accounts.loginServicesConfigured();
+  },
+
+});
 
 // return all login services, with password last
-Template.loginSection.services = getLoginServices;
-
-Template.loginSection.isPasswordService = function () {
-  return this.name === 'password';
-};
-
-Template.loginSection.hasOtherServices = function () {
-  return getLoginServices().length > 1;
-};
-
-Template.loginSection.hasPasswordService = hasPasswordService;
+Template.loginSection.helpers({
+  "services": getLoginServices,
+  "hasPasswordService": hasPasswordService,
+  "isPasswordService": function () {
+    return this.name === 'password';
+  },
+  "hasOtherServices": function () {
+    return getLoginServices().length > 1;
+  },
+});
 
