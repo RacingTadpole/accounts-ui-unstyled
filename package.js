@@ -10,7 +10,7 @@ Package.onUse(function (api) {
   api.versionsFrom('METEOR@0.9.0');
 
   api.use(['deps', 'service-configuration', 'accounts-base',
-           'underscore', 'templating', 'session'], 'client');
+           'underscore', 'templating', 'session', 'jquery'], 'client');
   // Export Accounts (etc) to packages using this one.
   api.imply('accounts-base', ['client', 'server']);
 

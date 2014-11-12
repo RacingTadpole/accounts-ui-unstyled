@@ -376,26 +376,32 @@ var loginOrSignup = function () {
 
 // setSignupFlow - added by AGS
 var setSignupFlow = function(signupFlow) {
-    var username = trimmedElementValueById('login-username');
-    var email = trimmedElementValueById('login-email');
-    var emailAgain = trimmedElementValueById('login-email-again');
-    // notably not trimmed. a password could (?) start or end with a space
-    var password = elementValueById('login-password');
+  var wasInSignupFlow = loginButtonsSession.get("inSignupFlow");
 
-    loginButtonsSession.set('inSignupFlow', signupFlow);
-    // force the ui to update so that we have the approprate fields to fill in
-    Deps.flush();
-
-    if (document.getElementById('login-username'))
-      document.getElementById('login-username').value = username;
-    if (document.getElementById('login-email'))
-      document.getElementById('login-email').value = email;
-    if (document.getElementById('login-email-again'))
+  var username = trimmedElementValueById('login-username');
+  var email = trimmedElementValueById('login-email');
+  var emailAgain = trimmedElementValueById('login-email-again');
+  // notably not trimmed. a password could (?) start or end with a space
+  var password = elementValueById('login-password');
+  loginButtonsSession.set('inSignupFlow', signupFlow);
+  // force the ui to update so that we have the approprate fields to fill in
+  Deps.flush();
+  if (document.getElementById('login-username'))
+    document.getElementById('login-username').value = username;
+  if (document.getElementById('login-email'))
+    document.getElementById('login-email').value = email;
+  if (!wasInSignupFlow && signupFlow) {
+    if (document.getElementById('login-email-again')) {
+      // animate the new field to make it clear what's different
+      $("#login-email-again-label-and-input").hide();
+      $("#login-email-again-label-and-input").slideDown();
       document.getElementById('login-email-again').value = emailAgain;
-    if (document.getElementById('login-username-or-email'))
-      document.getElementById('login-username-or-email').value = email || username;
-    if (password !== null)
-      document.getElementById('login-password').value = password;
+    }
+  }
+  if (document.getElementById('login-username-or-email'))
+    document.getElementById('login-username-or-email').value = email || username;
+  if (password !== null)
+    document.getElementById('login-password').value = password;
 }
 
 var login = function () {
