@@ -166,7 +166,12 @@ var loginEvents = {  // AGS: used to be Template._loginButtonsLoggedOutDropdown.
   'keypress #login-username, keypress #login-email, keypress #login-username-or-email, keypress #login-password, keypress #login-password-again': function (event) {
     if (event.keyCode === 13)
       login();   // AGS: default to login
+  },
+  'keypress #login-email-again': function (event) {
+    if (event.keyCode === 13)
+      signup();   // AGS: new field which is only present for signup, so default to that
   }
+
 };
 
 Template._loginButtonsLoggedOutDropdown.events = loginEvents; // AGS
@@ -243,6 +248,10 @@ Template._loginButtonsLoggedOutPasswordService.helpers({
          return _.contains(
            ["USERNAME_AND_EMAIL", "EMAIL_ONLY"],
            passwordSignupFields());
+       }},
+      {fieldName: 'email-again', fieldLabel: 'Please retype your email', inputType: 'email',  // Added by AGS
+       visible: function () {
+         return (passwordSignupFields() === "EMAIL_ONLY");
        }},
       {fieldName: 'email', fieldLabel: 'Email (optional)', inputType: 'email',
        visible: function () {
@@ -365,8 +374,34 @@ var loginOrSignup = function () {
     login();
 };
 
+// setSignupFlow - added by AGS
+var setSignupFlow = function(signupFlow) {
+    var username = trimmedElementValueById('login-username');
+    var email = trimmedElementValueById('login-email');
+    var emailAgain = trimmedElementValueById('login-email-again');
+    // notably not trimmed. a password could (?) start or end with a space
+    var password = elementValueById('login-password');
+
+    loginButtonsSession.set('inSignupFlow', signupFlow);
+    // force the ui to update so that we have the approprate fields to fill in
+    Deps.flush();
+
+    if (document.getElementById('login-username'))
+      document.getElementById('login-username').value = username;
+    if (document.getElementById('login-email'))
+      document.getElementById('login-email').value = email;
+    if (document.getElementById('login-email-again'))
+      document.getElementById('login-email-again').value = emailAgain;
+    if (document.getElementById('login-username-or-email'))
+      document.getElementById('login-username-or-email').value = email || username;
+    if (password !== null)
+      document.getElementById('login-password').value = password;
+}
+
 var login = function () {
   loginButtonsSession.resetMessages();
+
+  setSignupFlow(false); // added by AGS to hide the email-again field, if nec.
 
   var username = trimmedElementValueById('login-username');
   var email = trimmedElementValueById('login-email').toLowerCase();  // LOWERCASE conversion added by AGS
@@ -405,8 +440,12 @@ var login = function () {
   });
 };
 
+
 var signup = function () {
   loginButtonsSession.resetMessages();
+
+  var wasInSignupFlow = loginButtonsSession.get("inSignupFlow");
+  setSignupFlow(true); // added by AGS to display the email-again field
 
   var options = {}; // to be passed to Accounts.createUser
 
@@ -436,9 +475,18 @@ var signup = function () {
   if (!matchPasswordAgainIfPresent())
     return;
 
+  if (!wasInSignupFlow) return;  // AGS - if you weren't inSignupFlow before, then no email-again, so don't show email mismatch error
+
+  if (!matchEmailAgainIfPresent())  // AGS added
+    return;
+
   Accounts.createUser(options, function (error) {
     if (error) {
-      loginButtonsSession.errorMessage(error.reason || "Unknown error");
+      if (error.reason==="Email already exists.") {
+        loginButtonsSession.errorMessage("A user with that email address has already joined - please press 'Log in' instead.");
+      } else {
+        loginButtonsSession.errorMessage(error.reason || "Unknown error");
+      }
     } else {
       loginButtonsSession.closeDropdown();
     }
@@ -484,6 +532,18 @@ var changePassword = function () {
       loginButtonsSession.infoMessage("Password changed");
     }
   });
+};
+
+var matchEmailAgainIfPresent = function () {
+  var emailAgain = trimmedElementValueById('login-email-again').toLowerCase();
+  if (emailAgain !== null) {
+    var email = trimmedElementValueById('login-email').toLowerCase();
+    if (email !== emailAgain) {
+      loginButtonsSession.errorMessage("Please check your email address - the two above don't match!");
+      return false;
+    }
+  }
+  return true;
 };
 
 var matchPasswordAgainIfPresent = function () {
