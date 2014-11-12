@@ -396,6 +396,7 @@ var setSignupFlow = function(signupFlow) {
       $("#login-email-again-label-and-input").hide();
       $("#login-email-again-label-and-input").slideDown();
       document.getElementById('login-email-again').value = emailAgain;
+      $("#login-email-again").focus();
     }
   }
   if (document.getElementById('login-username-or-email'))
