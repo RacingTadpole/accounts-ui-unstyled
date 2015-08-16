@@ -104,12 +104,18 @@
 
       {{> _loginButtonsMessages}}
 
-      <div class="login-button login-button-form-submit-left" id="login-buttons-password">
-          Log in
-      </div>
-      <div class="login-button login-button-form-submit-right" id="signup-buttons-password">
-          New user
-      </div>
+      {{#if inSignupFlow}}
+        <div class="login-button login-button-form-submit-right" id="signup-buttons-password">
+            OK
+        </div>
+      {{else}}
+        <div class="login-button login-button-form-submit-left" id="login-buttons-password">
+            Log in
+        </div>
+        <div class="login-button login-button-form-submit-right" id="signup-buttons-password">
+            New user
+        </div>
+      {{/if}}
       <div class="login-close-text-clear"></div>
 
       {{#if showForgotPasswordLink}}
