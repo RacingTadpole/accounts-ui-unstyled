@@ -491,6 +491,7 @@ var signup = function () {
     if (error) {
       if (error.reason==="Email already exists.") {
         loginButtonsSession.errorMessage("A user with that email address has already joined - please press 'Log in' instead.");
+        setSignupFlow(false);
       } else {
         loginButtonsSession.errorMessage(error.reason || "Unknown error");
       }
