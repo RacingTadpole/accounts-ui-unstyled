@@ -125,6 +125,7 @@ Template._enrollAccountDialog.helpers({
 Template._justVerifiedEmailDialog.events({
   'click #just-verified-dismiss-button': function () {
     loginButtonsSession.set('justVerifiedEmail', false);
+    Router.go('manage'); // TODO: make this more general - for now, always go to the account page next
   }
 });
 
