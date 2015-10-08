@@ -380,7 +380,7 @@ var setSignupFlow = function(signupFlow) {
 
   var username = trimmedElementValueById('login-username');
   var email = trimmedElementValueById('login-email');
-  var emailAgain = trimmedElementValueById('login-email-again');
+  var emailAgain = trimmedElementValueById('login-email-again') || "";
   // notably not trimmed. a password could (?) start or end with a space
   var password = elementValueById('login-password');
   loginButtonsSession.set('inSignupFlow', signupFlow);
