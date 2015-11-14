@@ -364,7 +364,7 @@ var trimmedElementValueById = function(id) {
   if (!element)
     return null;
   else
-    return element.value.replace(/^\s*|\s*$/g, ""); // trim() doesn't work on IE8;
+    return element.value.replace(/^\s*|\s*$/g, ''); // trim() doesn't work on IE8;
 };
 
 var loginOrSignup = function () {
@@ -376,11 +376,11 @@ var loginOrSignup = function () {
 
 // setSignupFlow - added by AGS
 var setSignupFlow = function(signupFlow) {
-  var wasInSignupFlow = loginButtonsSession.get("inSignupFlow");
+  var wasInSignupFlow = loginButtonsSession.get('inSignupFlow');
 
   var username = trimmedElementValueById('login-username');
   var email = trimmedElementValueById('login-email');
-  var emailAgain = trimmedElementValueById('login-email-again') || "";
+  var emailAgain = trimmedElementValueById('login-email-again') || '';
   // notably not trimmed. a password could (?) start or end with a space
   var password = elementValueById('login-password');
   loginButtonsSession.set('inSignupFlow', signupFlow);
@@ -393,10 +393,14 @@ var setSignupFlow = function(signupFlow) {
   if (!wasInSignupFlow && signupFlow) {
     if (document.getElementById('login-email-again')) {
       // animate the new field to make it clear what's different
-      $("#login-email-again-label-and-input").hide();
-      $("#login-email-again-label-and-input").slideDown();
+      $('#login-email-again-label-and-input').hide();
+      $('#login-email-again-label-and-input').slideDown();
       document.getElementById('login-email-again').value = emailAgain;
-      $("#login-email-again").focus();
+      if (email) {
+        $('#login-email-again').focus();
+      } else {
+        $('#login-email').focus();
+      }
     }
   }
   if (document.getElementById('login-username-or-email'))
@@ -465,6 +469,14 @@ var signup = function () {
   }
 
   var email = trimmedElementValueById('login-email').toLowerCase();  // LOWERCASE conversion added by AGS
+  var password = elementValueById('login-password');
+
+  if (email === '' && password === '' && wasInSignupFlow) {
+    // pressing ok with empty fields returns to login view
+    setSignupFlow(false);
+    return;
+  }
+
   if (email !== null) {
     if (!validateEmail(email))
       return;
@@ -473,7 +485,6 @@ var signup = function () {
   }
 
   // notably not trimmed. a password could (?) start or end with a space
-  var password = elementValueById('login-password');
   if (!validatePassword(password))
     return;
   else

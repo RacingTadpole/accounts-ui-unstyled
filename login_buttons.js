@@ -94,6 +94,7 @@ validateEmail = function (email) {
       return true;
     }
   }
+  if (email === '') { return false; }
   loginButtonsSession.errorMessage("Invalid email");
   return false;
 };
